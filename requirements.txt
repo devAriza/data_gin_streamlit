@@ -3,3 +3,6 @@ pandas
 holidays
 seaborn
 matplotlib
+streamlit
+pyecharts
+streamlit-echarts
