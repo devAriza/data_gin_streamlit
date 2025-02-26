@@ -56,22 +56,13 @@ def main():
         if input_empleados:
             df_filtrado_empleado = df_filtrado_empleado[df_filtrado_empleado.index.get_level_values('empleado') == input_empleados]
 
-        df_filtrado_empleado = df_filtrado_empleado.reset_index()
-        df_filtrado_empleado = df_filtrado_empleado.drop(columns=['anio', 'empleado'])
-        df_filtrado_empleado = df_filtrado_empleado.set_index('cliente')
-
-        # Mostrar resultados
-        st.markdown("### DataFrame empleados")
-        st.dataframe(df_filtrado_empleado, use_container_width=True)
-
         df_filtrado_final = df_final.copy()
         df_final_resumen = df_filtrado_final.query('empleado == @input_empleados and anio == @input_anio')
         df_final_resumen = df_final_resumen.loc[:, df_final_resumen.columns != 'empleado']
 
-
-        # df_final_resumen = df_final_resumen.drop(columns=['anio', 'mes', 'empleado'])
-        st.markdown("### DataFrame resumen")
-        st.dataframe(df_final_resumen, use_container_width=True)
+        df_filtrado_empleado = df_filtrado_empleado.reset_index()
+        df_filtrado_empleado = df_filtrado_empleado.drop(columns=['anio', 'empleado'])
+        df_filtrado_empleado = df_filtrado_empleado.set_index('cliente')
 
         df_filtrado_chart = df_final_resumen[df_final_resumen['anio'] == input_anio]
 
@@ -113,13 +104,13 @@ def main():
                     "name": "Horas Efectivas",
                     "type": "line",
                     "data": horas_efectivas
-                    #"smooth": True
+                    # "smooth": True
                 },
                 {
                     "name": "Horas Meta",
                     "type": "line",
                     "data": horas_meta
-                    #"smooth": True
+                    # "smooth": True
                 }
             ]
         }
@@ -127,9 +118,18 @@ def main():
         # Mostrar el gráfico con streamlit-echarts
         st_echarts(chart_config, height="600px")
 
+        # Mostrar resultados
+        st.markdown(f"### {input_empleados}", unsafe_allow_html=True)
+        st.dataframe(df_filtrado_empleado, use_container_width=True)
+
+
+
+        st.dataframe(df_final_resumen, use_container_width=True)
+
+
 
     elif input_type == "Empresa" and input_empresas != None:
-        st.markdown("### DataFrame resumen_pivot_empresa")
+        st.markdown(f"### {input_empresas}", unsafe_allow_html=True)
         # st.dataframe(resumen_pivot_empresa)
 
         df_filtrado_empresas = resumen_pivot_empresa.copy()
